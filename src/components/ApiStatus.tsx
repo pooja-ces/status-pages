@@ -1,11 +1,11 @@
 import React from 'react';
 
-interface ApiStatusProps {
+interface IApiStatusProps {
     name: string;
     status: number;
 }
 
-const ApiStatus: React.FC<ApiStatusProps> = ({ name, status }) => {
+const ApiStatus: React.FC<IApiStatusProps> = ({ name, status }) => {
     const statusText = status === 200 ? 'Up' : 'Down';
     const statusColor = status === 200 ? 'text-green-500' : 'text-red-500';
 

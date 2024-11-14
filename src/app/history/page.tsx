@@ -1,4 +1,5 @@
 "use client"
+
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -14,8 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Footer from '@/components/Footer';
 import { useData } from '@/api/client';
-
-interface EventHistory {
+interface IEventHistory {
     date: string;
     time: string;
     title: string;
@@ -26,15 +26,12 @@ interface EventHistory {
     schedule: string;
     history: { time: string; description: string }[];
 }
-
-interface UseData {
-    historyData: EventHistory[] | null;
+interface IUseData {
+    historyData: IEventHistory[] | null;
 }
-
 const HistoryPage = () => {
     const router = useRouter();
-    const { historyData } = useData() as UseData;
-
+    const { historyData } = useData() as IUseData;
     const [visibleEvent, setVisibleEvent] = useState<number | null>(null);
     const [isPageLoaded, setIsPageLoaded] = useState(false);
     const [filterChanged, setFilterChanged] = useState(false);

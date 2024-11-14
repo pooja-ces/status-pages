@@ -2,7 +2,7 @@ import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-interface LineChartProps {
+interface ILineChartProps {
     data: number[];
     categories: string[];
     series?: {
@@ -12,7 +12,7 @@ interface LineChartProps {
     }[];
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, categories, series }) => {
+const LineChart: React.FC<ILineChartProps> = ({ data, categories, series }) => {
     const options: Highcharts.Options = {
         chart: {
             type: 'line',
