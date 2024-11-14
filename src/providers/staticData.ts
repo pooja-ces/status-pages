@@ -1,25 +1,25 @@
-interface Region {
+interface IRegion {
     name: string;
     status: string;
 }
 
 interface Service {
     name: string;
-    regions: Region[];
+    regions: IRegion[];
     status: string;
 }
 
-interface ExternalService {
+interface IExternalService {
     name: string;
     link: string;
     label: string;
 }
 
-interface Metric {
+interface IMetric {
     name: string;
 }
 
-interface ChartData {
+interface IChartData {
     title: string;
     average: string;
     time: string;
@@ -27,7 +27,7 @@ interface ChartData {
     data: number[];
 }
 
-interface Version {
+interface IVersion {
     version: string;
     schedule: string;
     components: string[];
@@ -35,7 +35,7 @@ interface Version {
     description: string[];
 }
 
-interface Incidents {
+interface IIncidents {
     mainIncidents: {
         activeIncidents: number;
         activeMaintenances: number;
@@ -43,21 +43,24 @@ interface Incidents {
     };
 }
 
-interface HistoryEntry {
+interface IHistoryEntry {
     time: string;
     description: string;
 }
 
-interface HistoryData {
+interface IBaseEvent {
+    time: string;
+    description: string[];
+}
+
+interface IHistoryData extends IBaseEvent {
     date: string;
     title: string;
-    description: string[];
     components: string[];
     centers: string[];
     schedule: string;
-    time: string;
     status: number;
-    history: HistoryEntry[];
+    history: IHistoryEntry[];
 }
 
 
@@ -128,7 +131,7 @@ export const staticDataProvider = {
         }
     ],
 
-    getExternalService: (): Promise<ExternalService[]> | ExternalService[] => [
+    getExternalService: (): Promise<IExternalService[]> | IExternalService[] => [
         { name: "AWS CloudFront", link: "https://health.aws.amazon.com/health/status", label: "CDN" },
         { name: "AWS EC2", link: "https://health.aws.amazon.com/health/status", label: "Server Hosting" },
         { name: "AWS Route 53", link: "https://health.aws.amazon.com/health/status", label: "DNS" },
@@ -145,13 +148,13 @@ export const staticDataProvider = {
         { name: "YubiCloud", link: "https://status.yubico.com/", label: "Security" }
     ],
 
-    getMetrics: (): Promise<Metric[]> | Metric[] => [
+    getMetrics: (): Promise<IMetric[]> | IMetric[] => [
         { name: "Today" },
         { name: "Week" },
         { name: "Month" }
     ],
 
-    getChartData: (): Promise<ChartData[]> | ChartData[] => [
+    getChartData: (): Promise<IChartData[]> | IChartData[] => [
         {
             title: "Hosted Status Pages Response Time",
             average: "100%",
@@ -223,7 +226,7 @@ export const staticDataProvider = {
         }
     ],
 
-    getVersion: (): Promise<Version[]> | Version[] => [
+    getVersion: (): Promise<IVersion[]> | IVersion[] => [
         {
             version: "1.7.3",
             schedule: "November 11, 2024 23:00 - 23:15 UTC",
@@ -236,14 +239,14 @@ export const staticDataProvider = {
         }
     ],
 
-    getIncidents: (): Promise<Incidents> | Incidents => ({
+    getIncidents: (): Promise<IIncidents> | IIncidents => ({
         mainIncidents: {
             activeIncidents: 0,
             activeMaintenances: 0,
             dailyIncidents: 55
         }
     }),
-    getHistoryData: (): Promise<HistoryData[]> | HistoryData[] => [
+    getHistoryData: (): Promise<IHistoryData[]> | IHistoryData[] => [
         {
             date: "October 2024",
             title: "Deploy Version 1.7.3",

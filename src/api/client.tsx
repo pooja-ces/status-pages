@@ -2,7 +2,7 @@
 import { staticDataProvider } from "@/providers/staticData";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-interface State {
+interface IState {
     loading: boolean;
     services?: any;
     extrenalServices?: any;
@@ -14,20 +14,17 @@ interface State {
 }
 
 
-const DataContext = createContext<State | undefined>(undefined);
+const DataContext = createContext<IState | undefined>(undefined);
 
 const createApiClient = () => staticDataProvider;
 
-interface DataProviderProps {
-    children: ReactNode;
-}
 
 export const DataProvider: React.FC<{
     children: ReactNode | ReactNode[] | null;
 }> = ({ children }) => {
     const api = createApiClient();
 
-    const [state, setState] = useState<State>({
+    const [state, setState] = useState<IState>({
         loading: true,
         services: undefined,
         extrenalServices: undefined,
