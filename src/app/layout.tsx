@@ -2,9 +2,6 @@
 import { DataProvider } from "@/api/client";
 import "./globals.css";
 
-
-
-
 export default function RootLayout({
   children,
 }: Readonly<{

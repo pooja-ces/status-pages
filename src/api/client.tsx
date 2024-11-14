@@ -1,5 +1,3 @@
-
-import { staticDataProvider } from "@/providers/staticData";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 interface IState {
@@ -13,17 +11,9 @@ interface IState {
     historyData?: any;
 }
 
-
 const DataContext = createContext<IState | undefined>(undefined);
 
-const createApiClient = () => staticDataProvider;
-
-
-export const DataProvider: React.FC<{
-    children: ReactNode | ReactNode[] | null;
-}> = ({ children }) => {
-    const api = createApiClient();
-
+export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [state, setState] = useState<IState>({
         loading: true,
         services: undefined,
@@ -37,24 +27,33 @@ export const DataProvider: React.FC<{
 
     useEffect(() => {
         (async () => {
-            if (api.getServices && api.getExternalService && api.getMetrics) {
+            try {
+                const response = await fetch("/api/data");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data");
+                }
+                const data = await response.json();
                 setState({
                     loading: false,
-                    services: await api.getServices(),
-                    extrenalServices: await api.getExternalService(),
-                    metrics: await api.getMetrics(),
-                    chartData: await api.getChartData(),
-                    versionData: await api.getVersion(),
-                    incidentsData: await api.getIncidents(),
-                    historyData: await api.getHistoryData(),
+                    services: data.services,
+                    extrenalServices: data.externalServices,
+                    metrics: data.metrics,
+                    chartData: data.chartData,
+                    versionData: data.versionData,
+                    incidentsData: data.incidentsData,
+                    historyData: data.historyData,
                 });
-            } else {
-                console.error("API client methods are undefined.");
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setState((prevState) => ({
+                    ...prevState,
+                    loading: false,
+                }));
             }
         })();
-    }, [api]);
+    }, []);
 
-    return <DataContext.Provider value={state}> {children} </DataContext.Provider>;
+    return <DataContext.Provider value={state}>{children}</DataContext.Provider>;
 };
 
 export const useData = () => {
