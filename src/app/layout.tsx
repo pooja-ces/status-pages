@@ -1,4 +1,5 @@
 "use client"
+
 import { DataProvider } from "@/api/client";
 import "./globals.css";
 
